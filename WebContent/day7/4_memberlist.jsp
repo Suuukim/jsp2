@@ -1,102 +1,92 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
+<!-- 함수 fn은 태그가 아닌 el과 함께 사용합니다. -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>   
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 목록 조회/수정</title>
+<title>회원 목록 조회/수정</title> <!-- jsp1프로젝트의 day5폴더 예제 -->
 <link rel="stylesheet" href="0_hrdkorea.css">
+<style type="text/css">
+	td{
+		border: 1px solid gray;
+	}
+</style>
 </head>
-	
-<body>
-
-	<c:forEach var="member" items="${list }">
-	<li>${member.custNo }(${status.index}) : ${member.custName } : ${member.phone } : ${member.address }</li>
-	</c:forEach>
-
-				
-  <div class="wrap_container">
+<body>		
+<div class="wrap_container">
   <header>
         <h3 class="header-item">쇼핑몰 회원관리 ver1.0</h3>
     </header>
     <nav class="haeder-nav">
         <ul class="container">
-          	<li><a href="2_insertForm.jsp">회원등록</a></li>
-            <li><a href="4_memberlist.jsp">회원목록조회/수정</a></li>
-            <li><a href="7_saleList.jsp">회원매출조회</a></li>
-            <li><a href="1_index.jsp">홈으로.</a></li>
+          	<li><a href="">회원등록</a></li>
+            <li><a href="">회원목록조회/수정</a></li>
+            <li><a href="">회원매출조회</a></li>
+            <li><a href="">홈으로.</a></li>
         </ul>
     </nav>
 	 <section>
             <h2 style="text-align: center;" class="section"><strong>회원목록조회/수정</strong></h2>
             <div>
             <!-- action url을 현재 url과 같게 했습니다. -->
-			<form action="4_memberlist.jsp">
-				<select>		<!-- 검색조건을 여러개로 추가 -->
-					<option>이름</option>
-					<option>주소</option>
-					<option>고객등급</option>
-					<option>거주지역</option>
+			<form action="memberSearch.jsp">
+				<select name="column">
+					<option value="name">이름</option>
+					<option value="address">주소</option>
+					<option value="grade">고객등급</option>
+					<option value="city">거주지역</option>
 				</select>
 				
-				<input name="search_name" placeholder="검색할 이름 입력">
+				<input name="find" placeholder="검색할 내용 입력">
+				<select name="find">
+						<!-- 사용자 선택하는 텍스트와 db테이블에 저장된 값이 다릅니다. -->
+						<option value="A">VIP</option>
+						<option value="B">일반</option>
+						<option value="C">직원</option>
+				</select>
 				<button>검색</button>
-				<button type="button" onclick="location.href='4_memberlist.jsp'">전체보기</button>
-			</form>
+				<button type="button" onclick="location.href='memberList.jsp'">전체보기</button>
+			</form>            
             </div>
             <table style="width: 90%;margin: auto;text-align: center;"> 
                 <tr style="text-align: center;">    
-                    <td><strong>회원번호</strong></td>       
-                    <td><strong>회원성명</strong></td>
-                    <td><strong>전화번호</strong></td>
+                    <td><strong>번호</strong></td>       
+                    <td><strong>이름</strong></td>
+                    <td><strong>연락처</strong></td>
                     <td><strong>주소</strong></td>
                     <td><strong>가입일자</strong></td>
                     <td><strong>고객등급</strong></td>
                     <td><strong>거주지역</strong></td>
                 </tr>
-			<%
-				//dao에서 ArrayList객체는 생성되어 있고 조회결과가 없으면 리스트에 저장된
-				//데이터가 없습니다.
-				if(list.size() != 0) {		//list의 데이터가 있을때만
-				for(int i=0;i<list.size();i++){
-			%>
+<!-- el은 getAttribute 와 출력 -->
+<c:forEach var="member" items="${list }">
 				<tr> 
-					<td > <a style="color: blue;" href="5_updateForm.jsp?custno=<%= list.get(i).getCustNo()%>">
-					<%=list.get(i).getCustNo() %></a> 
+					<td > <a style="color: blue;" href="#">
+					${member.custNo}</a> 
 					</td>
-					<td><%=list.get(i).getCustName()%></td>
-					<td><%=list.get(i).getPhone() %></td>
-					<td><%=list.get(i).getAddress()%></td>
-					<td><%=list.get(i).getJoinDate()%></td>
-					<td><%
-						String temp = list.get(i).getGrade();
-						switch(temp) {
-						case "A":
-							out.print("VIP");
-							break;
-						case "B":
-							out.print("일반");
-							break;
-						case "C":
-							out.print("직원");
-							break;
-						}
-					
-					%></td>
-					<td><%=list.get(i).getCity()%></td>
+					<td>${member.custName }</td>
+					<td>${member.phone }</td>
+					<td>${member.address }</td>
+					<td>${member.joinDate }</td>
+					<td>${member.grade=='A'? 'VIP': (member.grade=='B'? '일반':'직원') }
+					<!-- 조건연산형식 :  조건? 참실행명령문 : 거짓실행명령문 -->
+					<c:if test="${member.grade=='A' }">VIP</c:if>
+					<c:if test="${member.grade=='B' }">일반</c:if>
+					<c:if test="${member.grade=='C' }">직원</c:if>
+					</td>
+					<td>${member.city }</td>
 				</tr>
-			<%
-				}//for end
-				}else {	//list의 데이터가 없을때
-			%>					
-				<tr>
-					<td colspan="7">조회 결과가 없습니다 </td>
-				</tr>
-            <%
-				}            
-            %>
+</c:forEach>        		
+<!-- //list의 데이터가 없을 때 list애트리뷰트가 null X, size()가 0(jstl의 length함수로 검사) -->
+<c:if test="${fn:length(list)==0 }">
+	            <tr>
+              		<td colspan="7">조회 결과가 없습니다.</td>
+              	</tr>
+</c:if>		
             </table>
-
         </section>
     <footer>
         <p>HRDKOREA Copyrightⓒ2016 All rights reserved. Human Resources Development Service of Korea</p>

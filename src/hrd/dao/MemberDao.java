@@ -1,6 +1,8 @@
 package hrd.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -56,6 +58,22 @@ public class MemberDao {
 		return result;
 	}
 	
+	//검색
+	public List<Member> search(String column,String find){
+		SqlSession mapper = factory.openSession();
+		//Map 의 활용은 중요합니다.
+		Map<String, String> map =new HashMap<>();
+		map.put("column",column);
+		map.put("find",find);
+		
+		//member.xml에 파라미터값 여러개 전달하는 방법 : 클래스 , Map
+		List<Member> result = mapper.selectList("search", map);
+		mapper.close();
+		return result;
+	}
+	
+	
+	//테스트용
 	public List<Member> searchName(String name){
 		SqlSession mapper = factory.openSession();
 		//selectList메소드의 첫번째 인자값은 member.xml 파일에서 실행할 sql 태그의 id값
