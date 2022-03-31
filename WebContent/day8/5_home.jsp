@@ -24,8 +24,15 @@
 	</c:if>
 	</div>
 	<script type="text/javascript">
-		if('${param.logout}'=='y')
-			alert('로그아웃 되었습니다.');
+		setTimeout(function(){
+			//파라미터 처리하는 방법
+			if('${param.logout}'=='y')
+				alert('로그아웃 되었습니다.');
+			if('${param.login}'=='y')
+				alert('로그인 완료 되었습니다.');
+			if('${param.login}'=='n')
+				alert('로그인 정보가 옳지 않습니다.');
+		},100);
 	</script>	
 </body>
 </html>
