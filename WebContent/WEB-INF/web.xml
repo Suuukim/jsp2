@@ -10,6 +10,15 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
+  <servlet>
+  	<servlet-name>baby</servlet-name>
+  	<jsp-file>/index.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>baby</servlet-name>
+  	<url-pattern>/Baby</url-pattern>
+  </servlet-mapping>  
+  
 	<session-config>
 		<session-timeout>3</session-timeout>
 	</session-config>
