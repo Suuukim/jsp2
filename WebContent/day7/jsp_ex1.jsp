@@ -21,11 +21,11 @@ age : ${age}   <br>  <!-- 일반적으로 el 출력은 c:out 태그로 하니다
 <hr>
 <h4>if ~ else 형식 : else 해당하는 태그가 없습니다.</h4>
 <c:set var="age" value="24"/>
-<c:choose>
-	<c:when test="${age<20}">  <!-- if -->
+<c:choose>	<!-- choose 태그는 조건에따른 여러곳으로 분기 가능하고, 조건이 맞은 것이 없을경우 기본 분기를 제공할 수 있다. -->
+	<c:when test="${age<20}">  <!-- when = if -->
 	<div style="color:green;">청소년입니다.</div>
 	</c:when>
-	<c:otherwise>  <!-- else -->
+	<c:otherwise>  <!-- otherwise = else -->
 	<div style="color:blue;">성인입니다.</div>
 	</c:otherwise>
 </c:choose>
